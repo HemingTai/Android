@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView_one"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+
+        android:shadowColor="#A5A1A5"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="3.0"
+
+        android:singleLine="true"
+        android:text="@string/textView_one"
+        android:textColor="#03A9F4"
+        android:textSize="30sp"
+        android:textStyle="bold">
+
+        <requestFocus />
+    </TextView>
+    <!-- 1、layout_width：match_parent =》和父视图等宽; wrap_content =》自适应内容-->
+    <!-- 2、实现文字居中，需要设置gravity值为center -->
+    <!-- 3、实现阴影效果，需要同时设置shadowColor和shadowRadius，shadowDx和shadowDy是设置水平和垂直方向的偏移量 -->
+    <!-- 4、实现跑马灯效果，需要同时设置单行显示，ellipsize设置为跑马灯，重复次数，可获取焦点，最后请求聚焦 -->
+
+    <Button
+        android:id="@+id/button_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:background="@drawable/btn_selected"
+        android:backgroundTint="@color/btn_color_selector"
+        android:insetLeft="0dp"
+        android:text="@string/btn_1_title" />
+
+    <!-- android:foreground="#FF0000FF" 是前景色，会覆盖在文本之上-->
+</LinearLayout>
