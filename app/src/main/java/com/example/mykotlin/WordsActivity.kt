@@ -2,19 +2,14 @@ package com.example.mykotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.mykotlin.adapter.LetterAdapter
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.mykotlin.databinding.ActivityWordsBinding
 
 class WordsActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private var isLinearLayout = true
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,39 +17,12 @@ class WordsActivity : AppCompatActivity() {
         val binding = ActivityWordsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        recyclerView = binding.recyclerView
-        chooseLayout()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        setupActionBarWithNavController(navController)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.layout_menu, menu)
-        val layoutBtn = menu?.findItem(R.id.action_switch_layout)
-        setIcon(layoutBtn)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.action_switch_layout -> {
-                isLinearLayout = !isLinearLayout
-                chooseLayout()
-                setIcon(item)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun chooseLayout() {
-        val layoutManager = if (isLinearLayout) LinearLayoutManager(this) else GridLayoutManager(this, 4)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = LetterAdapter()
-    }
-
-    private fun setIcon(menuItem: MenuItem?) {
-        if (menuItem != null) {
-            val id = if (isLinearLayout) R.drawable.ic_linear_layout else R.drawable.ic_grid_layout
-            menuItem.icon =  ContextCompat.getDrawable(this, id)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

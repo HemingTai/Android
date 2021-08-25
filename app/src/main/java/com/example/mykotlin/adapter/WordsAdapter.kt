@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mykotlin.R
-import com.example.mykotlin.WordsDetailActivity
+import com.example.mykotlin.WordListFragment
 
 class WordsAdapter(private val letterId: String, context: Context) : RecyclerView.Adapter<WordsAdapter.WordViewHolder>() {
 
     class WordViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val button = view.findViewById<Button>(R.id.word_item)
+        val button: Button = view.findViewById(R.id.word_item)
     }
 
     private var filteredWords: List<String>
@@ -37,7 +37,7 @@ class WordsAdapter(private val letterId: String, context: Context) : RecyclerVie
         val item = filteredWords[position]
         holder.button.text = item
         holder.button.setOnClickListener {
-            val queryUri = Uri.parse("${WordsDetailActivity.SEARCH_PREFIX}${item}")
+            val queryUri = Uri.parse("${WordListFragment.SEARCH_PREFIX}${item}")
             val intent = Intent(Intent.ACTION_VIEW, queryUri)
             holder.itemView.context.startActivity(intent)
         }
