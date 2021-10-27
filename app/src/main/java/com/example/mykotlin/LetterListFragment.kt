@@ -34,7 +34,9 @@ class LetterListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.recyclerView
-        chooseLayout()
+        //类似于 iOS -> tableView.dataSource
+        recyclerView.adapter = LetterAdapter()
+        updateLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -48,7 +50,7 @@ class LetterListFragment : Fragment() {
         return when(item.itemId) {
             R.id.action_switch_layout -> {
                 isLinearLayout = !isLinearLayout
-                chooseLayout()
+                updateLayout()
                 setIcon(item)
                 return true
             }
@@ -61,16 +63,14 @@ class LetterListFragment : Fragment() {
         _binding = null
     }
 
-    private fun chooseLayout() {
-        val layoutManager = if (isLinearLayout) LinearLayoutManager(context) else GridLayoutManager(context, 4)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = LetterAdapter()
+    private fun updateLayout() {
+        recyclerView.layoutManager = if (isLinearLayout) LinearLayoutManager(context) else GridLayoutManager(context, 4)
     }
 
     private fun setIcon(menuItem: MenuItem?) {
         if (menuItem != null) {
             val id = if (isLinearLayout) R.drawable.ic_linear_layout else R.drawable.ic_grid_layout
-            menuItem.icon =  ContextCompat.getDrawable(this.requireContext(), id)
+            menuItem.icon =  ContextCompat.getDrawable(requireContext(), id)
         }
     }
 }

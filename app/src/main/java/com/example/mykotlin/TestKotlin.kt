@@ -1,15 +1,46 @@
 package com.example.mykotlin
 
+import kotlinx.coroutines.*
+import java.lang.Thread.sleep
 import java.util.*
 import kotlin.math.*
 
 fun getNullableLength(ns: String?) {
     println("for $ns:")
-    //run 和 let 类似
+
+    val list = listOf("a", "b", "c")
+    //with用于lambda表达式不需要返回值，可被看做是用某个东西做下面的事
+    with(list) {
+        println("with called")
+    }
+    //for optional only, let是判断optional的值是否为空
+    ns?.let {
+        println("let: $it")
+    }
+    //run和with类似，但是调用了let作为返回值，常用于初始化和计算返回值
     ns?.run {
         println("\tis empty? " + isEmpty())
         println("\tlength = $length")
     }
+    //apply常用于对象的初始化赋值
+    val model = Model().apply {
+        name = "a"
+    }
+    println("apply called: ${model.name}")
+    //also 常用于将此对象作为参数的一些操作
+    ns.also {
+        println("also called：$it")
+    }
+    //takeIf常用于条件判断,
+    var result = ns.takeIf {
+        it == "a"
+    } ?: "d"
+    println("takeIf called: $result")
+
+    result = ns.takeUnless {
+        it == "b"
+    } ?: "c"
+    println("takeUnless called: $result")
 }
 
 fun testBasicSyntax() {
@@ -35,14 +66,22 @@ fun testBasicSyntax() {
     println("e: $e")
 
     //判断数据类型 是 不是
-    if (e is Int) { println("e is Int") }
+    if (e is Int) {
+        println("e is Int")
+    }
     val d = false
-    if (d !is Boolean) { println("d is not Boolean") }
+    if (d !is Boolean) {
+        println("d is not Boolean")
+    }
 
     //判断元素是否在集合内 不在 在
-    val f = intArrayOf(1,2,3,4,5)
-    if (6 !in f) { println("6 is not an element of f") }
-    if (4 in f) { println("4 is an element of f") }
+    val f = intArrayOf(1, 2, 3, 4, 5)
+    if (6 !in f) {
+        println("6 is not an element of f")
+    }
+    if (4 in f) {
+        println("4 is an element of f")
+    }
 
     //区间：闭区间 步进 左开右闭 倒序
     print("区间1：")
@@ -53,10 +92,13 @@ fun testBasicSyntax() {
     for (i in 0 until 10) print(i)
     print(" 区间4：")
     for (i in 10 downTo 10) print(i)
+    val j = 6
+    //!in 表示不在某个区间内
+    if (j !in 0..6) print("j not in 0..6")
     println()
 
     //遍历
-    val array = listOf(1,2,3,4,5,6)
+    val array = listOf(1, 2, 3, 4, 5, 6)
     print("iterator item: ")
     for (item in array) print(item)
     print(" index: ")
@@ -86,13 +128,13 @@ fun testBasicSyntax() {
     loop@ for (i in 1..10) {
         for (j in 4..8) {
             if (i == 6) break@loop
-            print("${i+j} ")
+            print("${i + j} ")
         }
         println()
     }
 
     //高阶函数
-    val list = listOf(1,2,3,4,5,6,7,8,9,10)
+    val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     println(list.filter { it > 5 }.map { it * 2 })
     val map = mapOf("a" to 1, "b" to 2, "c" to 3)
     println(map.forEach { print("${it.key}:${it.value} ") })
@@ -123,7 +165,8 @@ fun testBasicSyntax() {
         Person1("John", "Boston", "+1-888-123456"),
         Person1("Sarah", "Munich", "+49-777-789123"),
         Person1("Svyatoslav", "Saint-Petersburg", "+7-999-456789"),
-        Person1("Vasilisa", "Saint-Petersburg", "+7-999-123456"))
+        Person1("Vasilisa", "Saint-Petersburg", "+7-999-123456")
+    )
     //associateBy 和 groupBy的区别在于处理相同key的时候:
     //associateBy 使用最后一个元素的value
     //groupBy 把相同key的value放在一个list里面
@@ -138,8 +181,8 @@ fun testBasicSyntax() {
     println(positives)
     println(negatives)
 
-    val fruitsBag = listOf("apple","orange","banana","grapes")
-    val clothesBag = listOf("shirts","pants","jeans")
+    val fruitsBag = listOf("apple", "orange", "banana", "grapes")
+    val clothesBag = listOf("shirts", "pants", "jeans")
     val cart = listOf(fruitsBag, clothesBag)
     //flatMap | flatten: 将二维数组降维成一维数组
     println(cart.flatMap { it })
@@ -180,9 +223,13 @@ fun testBasicSyntax() {
 }
 
 // 有返回值
-fun sum0(a: Int, b: Int): Int { return a + b }
+fun sum0(a: Int, b: Int): Int {
+    return a + b
+}
+
 // 若返回值只有一条语句，则可写成如下形式
 fun sum1(a: Int, b: Int, c: Int): Int = a + b + c
+
 // 若返回值类型可被推测，则返回值类型可省略
 fun sum2(a: Int, b: Int, c: Int) = a + b + c
 
@@ -191,7 +238,9 @@ fun voidFunc0(): Unit {}
 fun voidFunc1() {}
 
 // 可变长参数
-fun changeable(vararg v: Int) { v.forEach { print("$it ") } }
+fun changeable(vararg v: Int) {
+    v.forEach { print("$it ") }
+}
 
 // 类的修饰符
 // abstract  抽象类
@@ -225,7 +274,7 @@ class Circle {
         }
 }
 
-class Rectangle(len: Int): Shape(), TestInterface {
+class Rectangle(len: Int) : Shape(), TestInterface {
     var width: Int = 0
     var length = len
 
@@ -242,7 +291,7 @@ class Rectangle(len: Int): Shape(), TestInterface {
 
     override fun area() {
         super.area()
-        println("The rectangle's area is ${width*length}")
+        println("The rectangle's area is ${width * length}")
     }
 
     override fun test() {
@@ -252,8 +301,9 @@ class Rectangle(len: Int): Shape(), TestInterface {
 
 //类可以有一个主构造器，以及一个或多个次构造器，主构造器是类头部的一部分，位于类名称之后
 class Square0 constructor(len: Double) {}
+
 //如果主构造器没有任何注解，也没有任何可见度修饰符，那么constructor关键字可以省略
-class Square(len: Double): Shape() {
+class Square(len: Double) : Shape() {
     private var length = len
 
     override fun area() {
@@ -271,7 +321,9 @@ open class A {
     open val a = ""
     open var b = 1
     fun a() {}
-    open fun f() { println("A") }
+    open fun f() {
+        println("A")
+    }
 }
 
 interface B {
@@ -279,17 +331,21 @@ interface B {
     var c: Boolean
 
     fun b() {}
-    fun f() { println("B") }
+    fun f() {
+        println("B")
+    }
 }
 
-class C: A(), B {
+class C : A(), B {
     // 可以用一个var属性重写一个val属性，但是反过来不行，
     // 因为val属性本身定义了getter方法，重写为var属性会在衍生类中额外声明一个setter方法
     override var a = "1"
     override var b: Int = super.b
     override var c: Boolean
         get() = false
-        set(value) { c = value}
+        set(value) {
+            c = value
+        }
 
     override fun f() {
         // 同名函数调用需传入类型
@@ -297,7 +353,9 @@ class C: A(), B {
         super<B>.f()
     }
 
-    fun baz() { println("C baz") }
+    fun baz() {
+        println("C baz")
+    }
 
     fun D.foo() {
         bar() // 调用 D.bar
@@ -309,7 +367,9 @@ class C: A(), B {
         d.testSameFun()
     }
 
-    fun test() { println("C Test") }
+    fun test() {
+        println("C Test")
+    }
 
     fun D.testSameFun() {
         // 在某类内扩展方法中调用同名函数时，优先调用外类的方法，调用当前类的方法时需要加上 this 关键字
@@ -319,8 +379,13 @@ class C: A(), B {
 }
 
 class D {
-    fun bar() { println("D bar") }
-    fun test() { println("D Test") }
+    fun bar() {
+        println("D bar")
+    }
+
+    fun test() {
+        println("D Test")
+    }
 }
 
 class User(var name: String) {
@@ -329,6 +394,7 @@ class User(var name: String) {
         println("foo")
     }
 }
+
 // 扩展函数可以在已有类中添加新的方法，不会对原类做修改，扩展函数定义形式
 // fun receiverType.functionName(params){
 //    body
@@ -336,6 +402,7 @@ class User(var name: String) {
 fun User.getName() {
     println("The user's name is $name")
 }
+
 // 若扩展函数和成员函数一致，则会优先使用成员函数。
 fun User.foo() {
     println("foo external")
@@ -348,10 +415,12 @@ fun Rectangle.test() {
 fun Shape.test() {
     println("Shape test")
 }
+
 // 扩展函数是静态解析的，并不是接收者类型的虚拟成员，在调用扩展函数时，具体被调用的的是哪一个函数，由调用函数的的对象表达式来决定的，而不是动态的类型决定的
 fun shapeTest(s: Shape) {
     s.test()
 }
+
 // 对属性进行扩展，扩展属性允许定义在类或者kotlin文件中，不允许定义在函数中
 // 初始化属性因为属性没有后端字段（backing field），所以不允许被初始化，只能由显式提供的 getter/setter 定义
 val <T> List<T>.lastIndex: Int
@@ -366,28 +435,43 @@ fun Any?.toString(): String {
 }
 
 open class E {}
-class E1: E() {}
+class E1 : E() {}
 open class F {
     /* 以成员的形式定义的扩展函数, 可以声明为 open , 而且可以在子类中覆盖 */
-    open fun E.foo() { println("E.foo in F") }
-    open fun E1.foo() { println("E1.foo in F") }
-    fun caller(e: E) { e.foo() }
+    open fun E.foo() {
+        println("E.foo in F")
+    }
+
+    open fun E1.foo() {
+        println("E1.foo in F")
+    }
+
+    fun caller(e: E) {
+        e.foo()
+    }
 }
-open class F1: F() {
-    override fun E.foo() { println("E.foo in F1") }
-    override fun E1.foo() { println("E1.foo in F1") }
+
+open class F1 : F() {
+    override fun E.foo() {
+        println("E.foo in F1")
+    }
+
+    override fun E1.foo() {
+        println("E1.foo in F1")
+    }
 }
 
 // 如果一个类定义有一个伴生对象，也可以为伴生对象定义扩展函数和属性
 // 伴生对象通过"类名."形式调用，伴生对象声明的扩展函数，通过用类名限定符来调用
 class MyClass {
-    companion object { }
+    companion object {}
 }
 
 // 给伴生对象扩展方法
 fun MyClass.Companion.foo() {
     println("MyClass.Companion.foo")
 }
+
 // 给伴生对象扩展属性
 val MyClass.Companion.no: Int
     get() = 10
@@ -412,6 +496,7 @@ data class Person(var name: String, var age: Int) {
         this.name = name
     }
 }
+
 data class Person1(val name: String, val city: String, val phone: String)
 
 class Person2 {
@@ -420,6 +505,7 @@ class Person2 {
 
     override fun toString() = "The person name is $name, and age is $age"
 }
+
 // 声明泛型类，泛型可以用在类，接口，方法上面
 class Box<T>(t: T) {
     var value = t
@@ -428,7 +514,7 @@ class Box<T>(t: T) {
 // 定义泛型类型变量，可以完整地写明类型参数，如果编译器可以自动推定类型参数，也可以省略类型参数
 fun <T> boxIn(value: T) = Box(value)
 
-fun <T: Comparable<T>> sort(list: List<T>) { }
+fun <T : Comparable<T>> sort(list: List<T>) {}
 
 // 每一个枚举都是枚举类的实例，它们可以被初始化
 // 值从0开始。若需要指定值，则可以使用其构造函数
@@ -441,7 +527,7 @@ enum class Color(value: Int) {
 // Kotlin 使用 object 关键字来声明一个对象。
 // Kotlin 中我们可以方便的通过对象声明来获得一个单例
 object Site {
-    var url:String = ""
+    var url: String = ""
     val name: String = "百度"
 }
 
@@ -449,13 +535,13 @@ interface Base {
     fun run()
 }
 
-class BaseImp(private val x: String): Base {
+class BaseImp(private val x: String) : Base {
     override fun run() {
         println("$x is running")
     }
 }
 
-class Cat(b: Base): Base by b {
+class Cat(b: Base) : Base by b {
     fun foo() {
         run()
     }
@@ -466,6 +552,7 @@ val upperCase1: (String) -> String = { str: String -> str.toUpperCase(Locale.ROO
 val upperCase2: (String) -> String = { str -> str.toUpperCase(Locale.ROOT) }
 val upperCase3 = { str: String -> str.toUpperCase(Locale.ROOT) }
 val upperCase4: (String) -> String = { it.toUpperCase(Locale.ROOT) }
+
 //::是function pointer
 val upperCase5: (String) -> String = ::customUppercase
 
@@ -475,12 +562,12 @@ fun customUppercase(str: String): String {
 
 fun main() {
     testBasicSyntax()
-    println("sum = " + sum0(3,4))
+    println("sum = " + sum0(3, 4))
     changeable(0)
-    changeable(1,2,3)
+    changeable(1, 2, 3)
 
     // 匿名函数
-    val testLamda: (Int, Int) -> Int = { x, y -> x+y }
+    val testLamda: (Int, Int) -> Int = { x, y -> x + y }
     println(testLamda(5, 6))
 
     //交换两个数
@@ -504,7 +591,7 @@ fun main() {
     user.foo()
     shapeTest(rect)
 
-    val list = listOf(1,2,3,4)
+    val list = listOf(1, 2, 3, 4)
 //    list.lastIndex = 4 //错误：扩展属性不能有初始化器
     println(list.lastIndex)
 
@@ -555,11 +642,11 @@ fun main() {
     Cat(baseImp).run()
 
     getNullableLength(null)
-    getNullableLength("")
-    getNullableLength("abc")
+    getNullableLength("a")
+    getNullableLength("c")
 
     val jake1 = Person("jake", 18)
-    val desc = Person2().apply{
+    val desc = Person2().apply {
         name = "jake plus"
         age = 20
     }
@@ -582,7 +669,17 @@ fun main() {
     entrees.clear()
     println("Entrees is empty? ${entrees.isEmpty()}")
 
-    val words = listOf("about", "acute", "awesome", "balloon", "best", "brief", "class", "coffee", "creative")
+    val words = listOf(
+        "about",
+        "acute",
+        "awesome",
+        "balloon",
+        "best",
+        "brief",
+        "class",
+        "coffee",
+        "creative"
+    )
     // shuffled: 随机打乱集合中的项并创建新的集合
     // take: 获取集合中的前 N 个项
     val bWords = words.filter { it.startsWith("b", ignoreCase = true) }
@@ -591,15 +688,74 @@ fun main() {
         .sorted()
     println(bWords)
 
-    val ls = listOf(listOf("about", "acute", "awesome"), listOf("balloon", "best", "brief"), listOf("class", "coffee", "creative"))
+    val ls = listOf(
+        listOf("about", "acute", "awesome"),
+        listOf("balloon", "best", "brief"),
+        listOf("class", "coffee", "creative")
+    )
     println(ls.flatten())
+
+    val states = arrayOf("Starting", "Doing Task 1", "Doing Task 2", "Ending")
+//    testThread(states)
+    testLaunch(states)
+//    testRunBlocking(states)
+//    testAsync(states)
+}
+
+fun testThread(states: Array<String>) {
+    repeat(3) {
+        //单线程执行，不会阻塞当前线程
+        Thread {
+            println("${Thread.currentThread()} has started")
+            for (i in states) {
+                println("${Thread.currentThread()} - $i")
+                sleep(50)
+            }
+        }.start()
+    }
+}
+
+fun testLaunch(states: Array<String>) {
+    repeat(3) {
+        GlobalScope.launch {
+            println("${Thread.currentThread()} has started")
+            for (i in states) {
+                println("${Thread.currentThread()} - $i")
+                delay(5000)
+            }
+        }
+    }
+}
+
+fun testRunBlocking(states: Array<String>) {
+    repeat(3) {
+        //runBlocking 会启动新协程并在新协程完成之前阻塞当前线程
+        runBlocking {
+            println("${Thread.currentThread()} has started")
+            for (i in states) {
+                println("${Thread.currentThread()} - $i")
+                sleep(50)
+            }
+        }
+    }
+}
+
+fun testAsync(states: Array<String>) {
+    repeat(3) {
+        GlobalScope.async {
+            println("${Thread.currentThread()} has started")
+            for (i in states) {
+                println("${Thread.currentThread()} - $i")
+            }
+        }.invokeOnCompletion { sleep(50) }
+    }
 }
 
 class Model {
     var name = ""
 }
 
-class Dice(val numSides: Int) {
+class Dice(private val numSides: Int) {
 
     fun roll(): Int = (1..numSides).random()
 }
