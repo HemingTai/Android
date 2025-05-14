@@ -3,29 +3,44 @@ package com.example.mykotlin
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mykotlin.adapter.ItemAdapter
-import com.example.mykotlin.data.Datasource
+import com.example.mykotlin.databinding.ActivityAffirmationsBinding
+import com.example.mykotlin.viewModel.AffirmationsViewModel
 
 const val KEY_REVENUE = "revenue_key"
 const val KEY_DESSERT_SOLD = "dessert_sold_key"
 const val TAG = "AffirmationsActivity"
 
 class AffirmationsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAffirmationsBinding
+    private lateinit var viewModel: AffirmationsViewModel
 
     //用于创建应用
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityAffirmationsBinding.inflate(layoutInflater)
         Log.d(TAG, "onCreate called")
-        setContentView(R.layout.activity_affirmations)
+        setContentView(binding.root)
 
-        val dataset = Datasource().loadAffirmations()
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = ItemAdapter(this, dataset)
-        recyclerView.setHasFixedSize(true)
+        initViewModel()
+        initView()
 
         println(savedInstanceState?.getInt(KEY_REVENUE) ?: 0)
         println(savedInstanceState?.getInt(KEY_DESSERT_SOLD) ?: 0)
+    }
+
+    private fun initViewModel() {
+        viewModel = AffirmationsViewModel()
+        viewModel.affirmations.observe(this) {
+            println(it.size)
+        }
+    }
+
+    private fun initView() {
+        val dataset = viewModel.affirmations.value ?: listOf()
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = ItemAdapter(this, dataset)
+        recyclerView.setHasFixedSize(true)
     }
 
     //系统会在调用 onCreate() 之后立即调用 onStart()

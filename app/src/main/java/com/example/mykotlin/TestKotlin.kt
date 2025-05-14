@@ -1,9 +1,13 @@
 package com.example.mykotlin
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.lang.Thread.sleep
-import java.util.*
-import kotlin.math.*
+import java.util.Locale
+import kotlin.math.pow
 
 fun getNullableLength(ns: String?) {
     println("for $ns:")
@@ -106,6 +110,7 @@ fun testBasicSyntax() {
     print(" index and item:")
     for ((index, item) in array.withIndex()) print(" (index: $index, item: ${item})")
     println()
+    array.forEach { println(it) }
 
     //do-while
     var g = 5

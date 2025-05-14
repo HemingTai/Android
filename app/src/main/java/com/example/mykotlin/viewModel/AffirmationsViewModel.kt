@@ -1,11 +1,15 @@
-package com.example.mykotlin.data
+package com.example.mykotlin.viewModel
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.mykotlin.R
 import com.example.mykotlin.model.Affirmation
 
-class Datasource {
-    fun loadAffirmations(): List<Affirmation> {
-        return listOf(
+class AffirmationsViewModel : ViewModel() {
+    val affirmations = MutableLiveData(listOf<Affirmation>())
+
+    init {
+        affirmations.value = listOf(
             Affirmation(R.string.affirmation1, R.drawable.image1),
             Affirmation(R.string.affirmation2, R.drawable.image2),
             Affirmation(R.string.affirmation3, R.drawable.image3),

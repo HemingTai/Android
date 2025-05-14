@@ -9,13 +9,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyKotlin"
         android:allowBackup="true">
-        <activity android:name=".WordsActivity">
+        <activity
+            android:name=".AffirmationsActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AffirmationsActivity" />
+        <activity android:name=".WordsActivity" />
+        <!--        <activity android:name=".AffirmationsActivity" />-->
         <activity android:name=".TipTimeActivity" />
         <activity android:name=".DiceActivity" />
         <activity android:name=".CardActivity" />

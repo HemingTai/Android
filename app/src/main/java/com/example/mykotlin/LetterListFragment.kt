@@ -1,7 +1,12 @@
 package com.example.mykotlin
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,7 +16,6 @@ import com.example.mykotlin.adapter.LetterAdapter
 import com.example.mykotlin.databinding.FragmentLetterListBinding
 
 class LetterListFragment : Fragment() {
-
     private var isLinearLayout = true
     private var _binding: FragmentLetterListBinding? = null
     private val binding get() = _binding!!
@@ -40,7 +44,6 @@ class LetterListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.layout_menu, menu)
         val layoutButton = menu.findItem(R.id.action_switch_layout)
         setIcon(layoutButton)
