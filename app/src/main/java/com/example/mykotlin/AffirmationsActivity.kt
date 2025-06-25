@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mykotlin.adapter.ItemAdapter
 import com.example.mykotlin.databinding.ActivityAffirmationsBinding
 import com.example.mykotlin.viewModel.AffirmationsViewModel
+import com.example.mykotlin.viewModel.testAll
 
 const val KEY_REVENUE = "revenue_key"
 const val KEY_DESSERT_SOLD = "dessert_sold_key"
@@ -49,6 +50,7 @@ class AffirmationsActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart called")
+        testAll()
     }
 
     //onStart() 调用之后会立即调用 onResume()

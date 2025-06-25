@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs.kotlin'
+    id("org.jetbrains.kotlin.plugin.compose") version "$kotlin_version"
 }
 
 android {
@@ -37,12 +38,18 @@ android {
     }
     buildFeatures {
         viewBinding true
+        compose true
     }
 
     namespace = "com.example.mykotlin"
 }
 
 dependencies {
+
+    def composeBom = platform('androidx.compose:compose-bom:2025.05.01')
+    implementation composeBom
+    androidTestImplementation composeBom
+    implementation 'androidx.compose.material3:material3'
 
     //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -57,6 +64,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'net.java.dev.jna:jna-platform:5.9.0'
     testImplementation 'junit:junit:4.13.2'
